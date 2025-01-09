@@ -1,10 +1,10 @@
 # TClass
 ![Version](https://img.shields.io/badge/version-0.1-blue.svg?cacheSeconds=2592000)
 
-> TClass is an OOP library for Lua , help you programming naturally
+> TClass 是一个Lua的面对对象库，帮助你自然地在Lua使用面对对象
 
 [ [English](README.md) | [中文](README_CN.md) ]
-## Example
+## 示例
 
 ```lua
 local Object = require ("tclass").Object
@@ -23,47 +23,47 @@ local myDog = Dog ("kiki")
 myDog:bark ()
 ```
 
-Output :
+输出 :
 ```
 kiki barks!
 ```
 
-## Features
- - Easy to use 
- - Better Static Supports
- - Better Inheritance Supports
- - Meta methods support
- - Simmilar to Java (but not the same)
- - Optional Strict mode
- - Divide the data and methods
+## 特性
+ - 使用简单
+ - 更好的静态支持
+ - 更好的继承支持
+ - 元方法支持
+ - 和Java机制类似
+ - 可选择的严格模式
+ - 将实例的数据和方法区分 (方法都在metatable)
 
 
-## Menu
-- [Import to your project](#import-to-your-project)
-- [Create a new class](#create-a-new-class)
-- [Create an instance](#create-an-instance)
-- [Define properties](#define-properties)
-    - [Define properties](#define-properties)
-    - [Notices](#notices)
-    - [Strict mode](#strict-mode)
-    - [Don't initialize instance in Options](#dont-initialize-instance-in-options)
-- [Add methods to the class](#add-methods-to-the-class)
-    - [Add methods](#Add-methods)
-    - [Constructor](#constructor)
-- [Statics](#statics)
-    - [Declare statics](#declare-statics)
-    - [Access statics](#access-statics)
-    - [Notices](#notices-1)
-- [Extends from classes](#extends-from-classes)
-    - [Extends from classes](#extends-from-classes)
-    - [Overriding methods and properties](#overriding-methods-and-properties)
-    - [Call Super class method](#call-super-class-method)
-- [MetaMethods](#metamethods)
-- [is and isA](#is-and-isa)
-- [Methods](#methods)
-    - [Class methods](#class-methods)
-    - [Instance methods](#instance-methods)
-## Import to your project
+## 菜单
+- [导入项目](#导入项目)
+- [创建一个新的类](#创建一个新的类)
+- [创建一个实例](#创建一个实例)
+- [定义属性](#定义属性)
+    - [定义属性](#定义属性-1)
+    - [注意事项](#注意事项)
+    - [严格模式](#严格模式)
+    - [不要再类选项中初始化实例](#不要在类选项中初始化实例)
+- [#添加方法到类](#添加方法到类)
+    - [#添加方法到类](#添加方法到类-1)
+    - [构造函数](#构造函数)
+- [静态变量](#静态变量)
+    - [定义静态变量](#定义静态变量)
+    - [访问静态变量](#访问静态变量)
+    - [注意事项](#注意事项-)
+- [继承自其他类](#继承自其他类)
+    - [继承自其他类](#继承自其他类)
+    - [覆盖方法和属性](#覆盖方法和属性)
+    - [调用父类方法](#调用父类方法)
+- [元方法](#元方法)
+- [is 和 isA](#is-和-isa)
+- [所有方法](#所有方法)
+    - [实例对象方法](#实例对象方法)
+    - [类的方法](#类的方法)
+## 导入项目
 
 ```lua
 local tclass = require ("tclass")
@@ -75,21 +75,20 @@ local null = tclass.null
 
 
 
-Tclass export three main classes :
- - `Class` : A function to create a new class
- - `Object` : The base Class created by `Class`
- - `null` : A Object that represent nil or null value
+Tclass 导出三个模块 :
+ - `Class` : 用来创建类的函数
+ - `Object` : 定义好的基类
+ - `null` : 一个特殊对象用来代替nil
  
- ## Create a new class
- Ways to create a new class :
+ ## 创建一个新的类
 
-1. Extends from `Object` (recommended)
+1. 从 `Object` 继承创建 (推荐)
 
 ```lua
 local MyClass = Object:extends ("MyClass")
 ```
 
-2. Using `Class` function
+2. 用 `Class` 函数创建
 
 ```lua
 local MyClass = Class ("MyClass" , {})
@@ -101,10 +100,10 @@ local MyClass = Class ("MyClass" , {})
 
 
 `extends(SubClassname, [Options])` :
- - `ClassName` : The name of the new class
- - `Options` : The Class options (optional)
+ - `ClassName` : 类名
+ - `Options` : 类选项 (可选)
 
-`Options` contains  properties and methods : 
+`Options` 包含属性和方法 : 
 
 ```lua
 local Object = require ("tclass").Object
@@ -116,11 +115,11 @@ local MyClass = Object:extends ("MyClass",{
     end
 })
 ```
-The functions in `Options` will be added to the class as methods.
+在 `Options` 里的函数会作为方法被添加到类中
 
-## Create an instance
-### Create an instance
-To create an instance:
+## 创建一个实例
+### 创建一个实例
+创建一个实例:
 `Class:new(args...)`
 ````lua
 local Object = require ("tclass").Object
@@ -129,7 +128,7 @@ local MyClass = Object:extends ("MyClass")
 local myObjectA = MyClass:new()
 local myObjectB = MyClass()
 ````
-If the class has a constructor, you can pass arguments to Constructor:
+如果这个函数的构造函数有参数，可以在创建实例的时候传入参数：
 
 ```lua
 local Object = require ("tclass").Object
@@ -141,21 +140,20 @@ end
 MyClass("label")
 ```
 
-## Define properties
-### Define properties
-To define properties :
-1. using Options
-2. using `defineProps` method
-3. <del>Assign directly</del>
+## 定义属性
+### 定义属性
+1. 用类选项定义
+2. 用 `defineProps` 方法
+3. <del>直接赋值</del>
 ```lua
 local Object = require ("tclass").Object
 
---- Using Options
+--- 用类选项定义
 local MyClass = Object:extends ("MyClass",{
     p= "value",
 })
 
---- Using defineProps method
+--- 用 `defineProps` 方法
 local MyClass2 = Object:extends ("MyClass2")
 MyClass2:defineProps({
     p = "value",
@@ -167,21 +165,21 @@ print (a.p)
 local b = MyClass2()
 print (b.p) 
 
--- get Class properties
+-- 获取类属性
 print(MyClass2:getProps()["p"])
 ```
-Output :
+输出 :
 ```
 value
 value
 value
 ```
 
-The Class Method `getProps` returns the class properties.
+方法 `getProps` 返回类属性集合.
 
 
-### Notices :
-- <i><b>If you assign a value directly to an instance, it will not be considered as a property , although it declared in the constructor.</b></i>
+### 注意事项 :
+- <i><b>如果你直接给一个实例的成员赋值, 他不会被当作类属性 , 就算赋值过程在构造方法里面.</b></i>
 ```lua
 local Object = require ("tclass").Object
 local Person = Object:extends ("Person")
@@ -199,15 +197,14 @@ local jack = Person ("Jack")
 jack:sayHello ()
 
 --[[
-The output seems correct
-But 'name' not considered as a property of Person
+输出看似正常
+实际上 name 不是一个类属性
 ]]
 
 print(Person:getProps()["name"]) -- will get nil
 
 --[[
-  When you extends the 'Person' class, 
-  the problem will show up.
+  当继承Person时 问题就出现了
 ]]
 local Student = Person:extends ("Student")
 function Student:constructor (name, grade)
@@ -232,22 +229,22 @@ stack traceback:
         [C]: in ?
 ```
 
-The `name` and `money` initialize in constructor , thought as properties but they are not. Class `Student` extends `Person` , inherited no `name` or `money` property.
+ `name` 和 `money` 在构造函数被赋值 , 被误认为是属性，但是其实他们不是.  `Student` 类继承自 `Person` , 但是没有继承到 `name` 或者 `money` 属性.
 
-Calling `sayHello` try to access the `money` , which is not copied with default values (not a property) , nor initialized in the constructor.
+调用 `sayHello` 方法 ，尝试获取 `money` , 但是它既没有作为属性在初始化的时候被复制下来 , 又没有在构造函数被声明.
 
 
-### Strict mode
-Enable the strict mode cloud prevent that error.
+### 严格模式
+用严格模式可以预防这类错误
 
-Edit `tclass.lua` , change the `StrictMode` variable to `true` :
+编辑 `tclass.lua` ,把 `StrictMode` 变量的值改成 `true` :
 ```lua
 --.....other code
 local StrictMode = true
 --.....other code
 ```
 
-Run the code again :
+重新运行代码，在尝试赋值不存在的属性时会得到错误 :
 ```
 [Tclass] Error: You Cannot add a new property to an instance in strict mode
 Stack trace:
@@ -258,7 +255,7 @@ stack traceback:
         [C]: in ?
 ```
 
-The correct version is :
+正确的版本是 :
 ```lua
 local Person = Object:extends ("Person" , {
   name = "unknown",
@@ -271,8 +268,8 @@ local Student = Person:extends ("Student",{
 ......
 ```
 
-### Don't initialize instance in Options
-If your property is an instance , initialize it in constructor.
+### 不要在类选项中初始化实例
+如果你的类中有一个属性类型是实例对象，你应该在构造函数对他进行初始化
 ```lua
 local Object = require ("tclass").Object
 local Engine = Object:extends("Engine",{
@@ -321,10 +318,10 @@ car2: Engine is broken, cannot start.
 car3: Engine is broken, cannot start.
 ```
 
-car 1,2,3 initialize with copying properties, but it's shallow copying.
-Their `engine` are the same.
+car 1,2,3 初始化的时候经过了复制属性, 但是复制过程是浅拷贝.
+所以他们的 `engine` 属性实际上是同一个实例对象.
 
-The correct Version:
+正确的版本应该是 :
 ```lua
 local null = require ("tclass").null
 ---......other code
@@ -338,7 +335,7 @@ function Car:constructor(name)
 end
 ---.....other code
 ```
-`null` is a special Object , Any operation with it will raise an error.
+`null` 是一个特殊的对象 ,对他进行任何操作都会收到错误.
 
 ```lua
 local null = require ("tclass").null
@@ -353,12 +350,12 @@ stack traceback:
         [C]: in ?
 ```
 
-## Add methods to the class
-### Add methods
-There are three ways to add methods to the class :
-1. using Options
-2. assign directly to the class
-3. using `defineMethods` method
+## 添加方法到类
+### 添加方法到类
+
+1. 使用类属性
+2. 直接赋值给类
+3. 用 `defineMethods` 方法
 
 ```lua
 local Object = require ("tclass").Object
@@ -366,13 +363,13 @@ local Car = Object:extends ("Car",{
     owner = "John Doe",
     x = 0,
     y = 0,
-    --- Method declarated by options
+    --- 使用类属性
     printOwner = function (self)
         print (self.owner)
     end
 })
 
---define methods by using 'defineMethods'
+--用 `defineMethods` 方法
 Car:defineMethods ({
     moveTo = function (self, x, y)
         self.x = x
@@ -381,7 +378,7 @@ Car:defineMethods ({
     end
 })
 
---define methods directly
+--直接赋值给类
 function Car:info()
     print("Car Info:")
     print("------------------------")
@@ -410,10 +407,10 @@ Y: 20
 function: 0000020C64F10F50
 ````
 
-### Constructor
-Constructor with method name `"constructor"` , when you using `ClassName:new()` or `ClassName()` , will call the constructor.
+### 构造函数
+方法名为 `"constructor"` 的是构造函数 , 你在使用 `ClassName:new()` 或者 `ClassName()` 的时候会调用构造函数
 
-The first argument of the constructor should be always `self`.
+构造函数的第一个参数应该为 `self`.
 
 ```lua
 local Object = require ("tclass").Object
@@ -426,15 +423,14 @@ function Apple:constructor (value)
 end
 Apple(5)
 ```
-Output :
+输出 :
 ```
 Apple constructor called ,with value =  5
 ```
-## Statics 
-### Declare statics
-Ways to add statics to the class :
-1. Using Options
-2. Using `defineStatics` method
+## 静态变量 
+### 定义静态变量
+1. 用类属性
+2. 用 `defineStatics` 方法
 ```lua
 local Object = require ("tclass").Object
 local MyClass = Object:extends ("MyClass",{
@@ -448,15 +444,15 @@ MyClass:defineStatics({
 print ("a = " .. MyClass.a)
 print ("b = " .. MyClass.b)
 ```
-Output :
+输出 :
 ```
 a = 0
 b = 1
 ```
 
-### Access statics
+### 访问静态变量
 
-Instances and Classes can both access statics.
+类和实例对象都能访问静态变量
 ```lua
 local Object = require ("tclass").Object
 local Counter = Object:extends("Counter",{
@@ -486,8 +482,8 @@ New Counter created with id: 20
 21
 ```
 
-### Notices
-- <i><b>Defer from Java , Subclasses have their own statics , not the same as the parent class statics.</b></i>
+### 注意事项
+- <i><b>和Java不一样的是，子类拥有独立的静态变量空间</b></i>
 
 ```lua
 local Object = require("tclass").Object
@@ -515,7 +511,7 @@ Counter()
 print("---------------")
 MyCounter()
 ```
-Output :
+输出 :
 ```
 Counter (0) called
 ---------------
@@ -526,12 +522,12 @@ Counter (2) called
 Counter (0) called
 MyCounter (0) called
 ```
-`MyCounter` extends `Counter` , Inherits the statics of `Counter` . MyCounter has its own statics variable `count` with value `0` .
+`MyCounter` 继承自 `Counter` ,获得 `Counter` 的静态变量. `MyCounter` 有他自己的静态变量 `count` = `0` .
 
 
-Although `MyCounter` call the `constructor` of `Counter` , the reference to `self.count` is `MyCounter.count`.
+尽管 `MyCounter` 调用了 `Counter` 的 `constructor` (构造函数)  , 但是 `self.count` 指的还是 `MyCounter.count`.
 
-To count the subclass instances , you should change `self.count` to `Counter.count` .
+如果你要统计子类的对象的数量,把 `self.count` 改成 `Counter.count` .
 
 
 ```lua
@@ -543,7 +539,7 @@ function Counter:constructor()
 end
 ---.....other code
 ```
-Output :
+输出 :
 ```
 Counter (0) called
 ---------------
@@ -555,12 +551,12 @@ Counter (3) called
 MyCounter (3) called
 ```
 
-## Extends from classes
+## 继承自其他类
 
-### Extends from classes
-Use `"ParentClass:extends(SubClassName, [Options])"` to extends a class from another class.
+### 继承自其他类
+用 `"父类:extends(子类名 : 字符串, [类选项])"` 来继承应该类
 
-The SubClass will inherit the properties , methods ( including constructor ) and statics of the ParentClass.
+子类会从父类继承属性 , 方法 ( 包括构造器 ) 和 静态变量
 
 ```lua
 local Object = require("tclass").Object
@@ -587,10 +583,10 @@ Output :
 ```
 5       10      15
 ```
-### Overriding methods and properties
-Define a method or property in the SubClass with the same name of method or property in the ParentClass will override it
+### 覆盖方法和属性
+给子类声明和父类同名的方法或者属性,会覆盖父类的方法或者属性
 
-the `moveTo` method and `wheelsNum` property are overridden:
+下面 `moveTo` 方法 和 `wheelsNum` 属性就被覆盖了:
 ```lua
 local Object = require("tclass").Object
 local Vehicle = Object:extends("Vehicle",{
@@ -626,13 +622,13 @@ car:moveTo(10,20)
 car:info()
 
 ```
-Output : 
+输出 : 
 ```
 Car Owned by: John moved to (10,20)
 Vehicle with 4 wheels at (10,20)
 ```
-### Call Super class method
-To call the super class method , use the `super` method of instances.
+### 调用父类方法
+用`super` 方法可以调用父类方法
 
 `super("methodName",arg1,arg2,...)`
 ```lua
@@ -661,11 +657,11 @@ Output :
 MyClass info: hello
 MyClass2 info: hello
 ```
-`super` always refers to the parent of class where the method is declared in, similar to `super` in Java.
+`super` 指方法所在的类的父类 , 这一点和Java的super关键字类似
 
-## MetaMethods
-### MetaMethods
-Define methods with the same name of metatable methods' , will considere as metamethods.
+## 元方法
+### 元方法
+用metatable元方法的名字来定义类的方法,这个方法会被视为元方法
 
 ```lua
 
@@ -693,17 +689,17 @@ local v1 = Vector(1, 2)
 local v2 = Vector(3, 4)
 print(v1+v2)
 ```
-Output :
+输出` :
 ```
 Vector(4, 6)
 ```
-`__add` and `__tostring` are metamethods.
+`__add` 和 `__tostring` 是元方法.
 
-Specially , if you override the `__index` or `__newindex` (Not recommended) , they will be called when member is not found in the properties , methods or statics.
+特别的 , 如果你覆写 `__index` or `__newindex` (不推荐) ,他们会在实例的成员,属性,静态变量和方法都找不到的时候调用.
 
-If you override `__index` or `__newindex` , It's recommend to call `self:rawget(key)` or `self:rawset(key,value)` instead of `rawget` or `rawset`.
+如果你覆写了 `__index` 或者 `__newindex` , 最好调用 `self:rawget(key)` 或者 `self:rawset(key,value)` 而不是 `rawget` 或者 `rawset`.
 
-The example show the difference :
+下面的例子展示了二者的不同之处 :
 ```lua
 local Object = require ("tclass").Object
 local MyClass = Object:extends("MyClass",{
@@ -747,7 +743,7 @@ b.data1 = 10
 print(b.data)
 print(b.data1)
 ```
-Output :
+输出 :
 ```
 nil
 10
@@ -758,17 +754,17 @@ nil
 10
 10
 ```
-When `a` try to access `data1` , it will call `__index` , `rawget` try to get `data` directly from the table , but `data` is a static variable (virtual property) , so it will return `nil` .
+当 `a` 尝试访问属性 `data1` ,  `__index` 方法会被调用, `rawget` 尝试直接从表中获取 `data`  , 但是 `data` 是一个类静态变量 (虚拟属性) ,无法获取, 所以会返回一个 `nil` .
 
-When `a` try to set `data1` , it will call `__newindex` , `rawset` try to set `data` directly to the table . It seems to work fine. But `a.data` doesn't refers to the static variable `data` anymore, it refers to a property `data` , masking the static variable.
+当 `a` 尝试赋值 `data1` ,  `__newindex` 会被调用 , `rawset` 尝试直接设置 `data` 到表中 . 看起来这个方法是可以的. 但是现在 `a.data` 其实不再指向原来的虚拟方法,即静态变量 `data` , 而是指向一个属性 `data` , 这个属性覆盖了原来的`data`.
 
-## `is` and `isA`
-### `is` and `isA`
-`is` and `isA` are two methods of instances and classes to check if an object is an instance of a class or a subclass of a class.
+## `is` 和 `isA`
+### `is` 和 `isA`
+`is` 和 `isA` 是两个方法检查类和实例直接的关系
 
-`is(ClassObject | className)` - is a Class or Class Instance
+`is(ClassObject | className)` - 是否来自同一个类
 
-`isA (ClassObject | className)` - is a subclass or subclass's instance of a Class
+`isA (ClassObject | className)` - 来自同一个类或者这个类的子类
 
 ```lua
 local Vehicle = Object:extends("Vehicle")
@@ -794,7 +790,7 @@ print ("----------------------")
 print(car:is(Car))
 print(car:is(Vehicle))
 ```
-Output :
+输出 :
 ```
 false
 true
@@ -808,13 +804,13 @@ true
 true
 false
 ```
-## Methods
-### Instance methods
+## 所有方法
+### 实例对象方法
  - `super("MethodName",arg1,arg2,...)`
  - `getClass()`
  - `getClassName()`
  - `getParentClass()`
- - `static()`   : get statics of the class
+ - `static()`   : 获取静态变量
  - `rawget(key)`
  - `rawset(key,value)`
  - `is(ClassObject | className)`
@@ -822,13 +818,13 @@ false
  - `clone ([KeysNeedToDeepCopy])`
  - `deepClone([KeysNotNeedToDeepCopy])`
 
- ### Class methods
+ ### 类的方法
  - `is(ClassObject | className)`
  - `isA (ClassObject | className)`
  - `new(arg1,arg2,...)`
- - `load(datas : table)` : convert table to instance
+ - `load(datas : table)` : 把一个 table 变成实例对象
  - `extends(SubClassName, [Options])`
- - `getClass()` : return self
+ - `getClass()` : 返回自己
  - `getProps()`
  - `getMethods()`
  - `getStatics()`
@@ -837,14 +833,14 @@ false
  - `defineMethods(methods : table)`
  - `getClassName()`
  - `getParentClass()`
-## Author
+## 作者
 👤 **Meainc**
 
 * Github: [@Meainc](https://github.com/Meainc)
 
-## Show your support
+## 支持
 
-Give a ⭐️ if this project helped you!
+如果这个项目对你有帮助,给我一个 ⭐️ !
 
 
 ***
